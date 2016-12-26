@@ -1,0 +1,12 @@
+@import './assets/css/base/colors';
+
+.welcome {
+    display: flex;
+    min-height: 100%;
+    align-items: center;
+    justify-content: center;
+
+    button {
+        display: block;
+    }
+}

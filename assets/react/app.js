@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import store, { history } from './redux/store';
 
 import App from './components/app/App';
-import TestContainer from './components/test/TestContainer';
+import WelcomeContainer from './components/welcome/WelcomeContainer';
 
 import '../css/screen.scss';
 
@@ -14,7 +14,7 @@ render((
   <Provider store={store}>
     <Router history={history}>
       <Route path="/" component={App}>
-        <IndexRoute component={TestContainer} />
+        <IndexRoute component={WelcomeContainer} />
       </Route>
     </Router>
   </Provider>
