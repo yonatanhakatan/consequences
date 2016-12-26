@@ -37,7 +37,7 @@ module.exports = (config) => {
 
     preprocessors: {
       // add webpack as preprocessor
-      'assets/react/**/*.js': ['webpack', 'sourcemap'],
+      'assets/react/**/*.js': ['webpack', 'sourcemap', 'coverage'],
     },
 
     webpack: webpackConfig,
@@ -46,12 +46,20 @@ module.exports = (config) => {
       noInfo: true, //please don't spam the console when running in karma!
     },
 
-    reporters: ['progress'],
+    reporters: ['dots', 'coverage'],
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: ['Chrome'],
+    browsers: ['Firefox'],
     singleRun: true,
+    coverageReporter: {
+      // specify a common output directory
+      dir: './coverage',
+      reporters: [
+        { type: 'html', subdir: 'report-html' },
+        { type: 'lcov', subdir: 'report-lcov' },
+      ],
+    },
   });
 };
