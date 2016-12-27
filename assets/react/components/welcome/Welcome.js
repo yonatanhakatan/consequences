@@ -4,7 +4,7 @@ import classNames from 'classnames';
 
 import styles from './Welcome.scss';
 
-const Welcome = () => {
+const Welcome = (props) => {
   const classes = classNames({
     welcome: true,
   });
@@ -12,11 +12,15 @@ const Welcome = () => {
   return (
     <div styleName={classes}>
       <div>
-        <button>Start Game</button>
+        <button onClick={props.startGame}>Start Game</button>
         <button>Join Game</button>
       </div>
     </div>
   );
+};
+
+Welcome.propTypes = {
+  startGame: React.PropTypes.func,
 };
 
 export default cssModules(Welcome, styles, { allowMultiple: true });

@@ -6,7 +6,7 @@ import MainContainer from '../main/MainContainer';
 
 function mapStateToProps(state) {
   return {
-    test: state.test,
+    auth: state.auth,
   };
 }
 
