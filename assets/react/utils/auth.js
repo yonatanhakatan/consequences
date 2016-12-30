@@ -56,6 +56,7 @@ const redirectIfNoAuth = (state1, state2) => {
  */
 export function fbLogin() {
   const provider = new firebase.auth.FacebookAuthProvider();
+  provider.addScope('user_friends');
 
   return firebase.auth().signInWithPopup(provider)
     .then((success) => {
