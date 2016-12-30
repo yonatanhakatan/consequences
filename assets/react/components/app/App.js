@@ -1,12 +1,13 @@
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import * as actionCreators from '../../redux/actions/actionCreators';
+import * as actionCreators from '../../redux/actions';
 
 import MainContainer from '../main/MainContainer';
 
 function mapStateToProps(state) {
   return {
-    auth: state.auth,
+    user: state.user,
+    games: state.games,
   };
 }
 

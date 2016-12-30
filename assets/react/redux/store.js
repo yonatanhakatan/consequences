@@ -6,14 +6,15 @@ import thunk from 'redux-thunk';
 
 // import the root reducer
 import rootReducer from './reducers/index';
-import * as actionCreators from './actions/actionCreators';
 
 // Default States
-import auth from './data/auth';
+import user from './data/user';
+import games from './data/games';
 
 // create an object for the default data
 const defaultState = {
-  auth,
+  user,
+  games,
 };
 
 const store = createStore(
@@ -33,8 +34,5 @@ if (module.hot) {
     store.replaceReducer(nextRootReducer);
   });
 }
-
-// Initialise the Firebase auth state change listener
-store.dispatch(actionCreators.verifyAuth());
 
 export default store;

@@ -13,7 +13,7 @@ class WelcomeContainer extends React.Component {
   }
 
   startGame() {
-    if (this.props.auth.authenticated) {
+    if (this.props.user.authenticated) {
       browserHistory.push('/auth/opponent');
     } else {
       fbLogin()
@@ -31,7 +31,7 @@ class WelcomeContainer extends React.Component {
 }
 
 WelcomeContainer.propTypes = {
-  auth: React.PropTypes.object,
+  user: React.PropTypes.object,
 };
 
 export default WelcomeContainer;

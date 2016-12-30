@@ -2,8 +2,29 @@ import React from 'react';
 
 import Main from './Main';
 
-const MainContainer = (props) => (
-  <Main {...props} />
-);
+import { initFB } from '../../utils/fb';
+
+class MainContainer extends React.Component {
+
+  constructor() {
+    super();
+    initFB();
+  }
+
+  componentDidMount() {
+    this.props.verifyAuth();
+    this.props.getUserDetails(this.props.retrieveGames);
+  }
+
+  render() {
+    return <Main {...this.props} />;
+  }
+}
+
+MainContainer.propTypes = {
+  verifyAuth: React.PropTypes.func,
+  getUserDetails: React.PropTypes.func,
+  retrieveGames: React.PropTypes.func,
+};
 
 export default MainContainer;

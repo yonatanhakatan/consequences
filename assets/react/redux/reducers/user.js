@@ -1,14 +1,18 @@
 import update from 'immutability-helper';
 
-export default function auth(state = {}, action) {
+export default function user(state = {}, action) {
   switch (action.type) {
-    case 'AUTH_USER':
+    case 'USER_AUTH':
       return update(state, {
         authenticated: { $set: true },
       });
-    case 'AUTH_SIGNOUT':
+    case 'USER_NO_AUTH':
       return update(state, {
         authenticated: { $set: false },
+      });
+    case 'UPDATE_USER_DETAILS':
+      return update(state, {
+        fbId: { $set: action.fbId },
       });
     default:
       return state;
