@@ -14,6 +14,10 @@ export default function user(state = {}, action) {
       return update(state, {
         fbId: { $set: action.fbId },
       });
+    case 'UPDATE_USER_FB_FRIENDS':
+      return update(state, {
+        friends: { $set: action.friends },
+      });
     default:
       return state;
   }

@@ -58,13 +58,47 @@ export const getCurrentUser = () =>
 
 /**
  * Show a Facebook friend selector dialog
+ * @param  {string} The facebook id, username or invite token
+ *                  of the selected person
  * @return {Object} Promise object
  */
-export const showFriendSelector = () =>
+export const showFriendSelector = (selectedFriendId) =>
   new Promise((resolve) => {
     waitForSdk(() => {
-      window.FB.ui({ method: 'apprequests', message: 'Hello', max_recipients: '1' }, (response) => {
+      window.FB.ui({ method: 'apprequests', message: 'Hello', to: selectedFriendId }, (response) => {
         resolve(response);
       });
+    });
+  });
+
+/**
+ * Get the user's friend's who have not installed the app
+ * @return {Object} Promise object
+ */
+export const getInvitableFriends = () =>
+  new Promise((resolve) => {
+    waitForSdk(() => {
+      window.FB.api('/me/invitable_friends?limit=1000',
+        { access_token: localStorage.getItem('fbAccessToken') },
+        (friends) => {
+          resolve(friends);
+        }
+      );
+    });
+  });
+
+/**
+ * Get the user's friend's who have installed the app
+ * @return {Object} Promise object
+ */
+export const getAppFriends = () =>
+  new Promise((resolve) => {
+    waitForSdk(() => {
+      window.FB.api('/me/friends?fields=id,name,picture&limit=1000',
+        { access_token: localStorage.getItem('fbAccessToken') },
+        (friends) => {
+          resolve(friends);
+        }
+      );
     });
   });

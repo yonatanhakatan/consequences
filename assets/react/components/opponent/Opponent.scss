@@ -1,5 +1,28 @@
-@import './assets/css/base/colors';
+@import './assets/css/utils/variables';
 
 .opponent {
-    text-align: left;
+
+    ul {
+        display: flex;
+        flex-wrap: wrap;
+        list-style-type: none;
+
+        li {
+            width: 150px;
+            margin: 0 ($baseSpacing / 2) ($baseSpacing / 2) 0;
+
+            button {
+                width: 100%;
+                background-color: transparent;
+                border: none;
+                cursor: pointer;
+                text-align: center;
+
+                & > div {
+                    padding-bottom: $baseSpacing / 2;
+                    font-weight: 700;
+                }
+            }
+        }
+    }
 }
