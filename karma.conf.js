@@ -53,6 +53,7 @@ module.exports = (config) => {
     autoWatch: true,
     browsers: ['Firefox'],
     singleRun: true,
+    browserNoActivityTimeout: 100000,
     coverageReporter: {
       // specify a common output directory
       dir: './coverage',
