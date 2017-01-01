@@ -1,9 +1,9 @@
 import React from 'react';
 import { storiesOf, action } from '@kadira/storybook';
-import Opponent from '../Opponent';
+import FriendSelector from '../FriendSelector';
 import { FRIENDS } from '../../../mocks/friends';
 
-storiesOf('Opponent', module)
+storiesOf('FriendSelector', module)
   .add('regular state', () => (
-    <Opponent friends={FRIENDS} selectFriend={action('Select Friend')} />
+    <FriendSelector friends={FRIENDS} selectFriend={action('Select Friend')} />
   ));
