@@ -15,6 +15,18 @@ export default function games(state = {}, action) {
         andThen: action.gameData.andThen || null,
       } } });
     }
+    case 'UPDATE_GAME_VALUE': {
+      return update(state, {
+        [action.gameId]: {
+          [action.gameKey]: {
+            $set: action.gameVal,
+          },
+          turn: {
+            $set: action.gameNextTurn,
+          },
+        },
+      });
+    }
     default:
       return state;
   }

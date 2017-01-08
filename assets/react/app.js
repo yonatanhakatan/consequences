@@ -6,8 +6,9 @@ import { Provider } from 'react-redux';
 import store, { history } from './redux/store';
 
 import App from './components/app/App';
-import WelcomeContainer from './components/welcome/WelcomeContainer';
+import GameContainer from './components/game/GameContainer';
 import OpponentContainer from './components/opponent/OpponentContainer';
+import WelcomeContainer from './components/welcome/WelcomeContainer';
 
 import redirectIfNoAuth from './utils/auth';
 
@@ -20,6 +21,7 @@ render((
         <IndexRoute component={WelcomeContainer} />
         <Route path="/auth">
           <Route path="opponent" component={OpponentContainer} />
+          <Route path="game/:gameId" component={GameContainer} />
         </Route>
       </Route>
     </Router>

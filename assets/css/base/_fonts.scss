@@ -11,3 +11,7 @@ $baseLineHeight: 24px;
     font-weight: 400;
     font-style: normal;
 }
+
+@mixin fsHandwriting {
+    font-family: 'Handlee';
+}

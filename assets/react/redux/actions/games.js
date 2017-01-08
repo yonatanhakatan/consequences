@@ -1,4 +1,5 @@
 import firebase from '../../firebase/Firebase';
+import { browserHistory } from 'react-router';
 
 /**
  * The actual create game action which gets dispatched
@@ -6,7 +7,7 @@ import firebase from '../../firebase/Firebase';
  * @param  {Object} gameData The game data to create with
  * @return {Object} The action data
  */
-export function createGame(gameId, gameData) {
+function createGameAction(gameId, gameData) {
   return {
     type: 'CREATE_GAME',
     gameId,
@@ -24,7 +25,7 @@ export function initGame(opponentFbId) {
   return (dispatch, getState) => {
     const gameId = Math.random().toString(36).substr(2, 9);
     const hostFbId = getState().user.fbId;
-    dispatch(createGame(gameId, { hostFbId, opponentFbId, turn: hostFbId }));
+    dispatch(createGameAction(gameId, { hostFbId, opponentFbId, turn: hostFbId }));
 
     firebase.post(`games/${gameId}`, {
       data: getState().games[gameId],
@@ -35,6 +36,8 @@ export function initGame(opponentFbId) {
         firebase.push(`users/${opponentFbId}/games`, {
           data: gameId,
         });
+
+        browserHistory.push(`/auth/game/${gameId}`);
       });
     });
   };
@@ -58,9 +61,64 @@ export function retrieveGames() {
           context: {},
           asArray: false,
         }).then((gameData) => {
-          dispatch(createGame(gameId, gameData));
+          dispatch(createGameAction(gameId, gameData));
         });
       });
     });
+  };
+}
+
+/**
+ * The actual update game value action which gets dispatched when a
+ * user submits their turn
+ * @param  {string} gameId   The unique identifier for the game
+ * @param  {string} gameKey  The key for the game to update e.g. manSaid
+ * @param  {string} gameVal  The value that the user has entered
+ * @return {Object} The action data
+ */
+function updateGameValueAction(gameId, gameKey, gameVal, gameNextTurn) {
+  return {
+    type: 'UPDATE_GAME_VALUE',
+    gameId,
+    gameKey,
+    gameVal,
+    gameNextTurn,
+  };
+}
+
+/**
+ * Update a game value after a user submits their turn
+ * @param  {string} gameId   The unique identifier for the game
+ * @param  {string} gameKey  The key for the game to update e.g. manSaid
+ * @param  {string} gameVal  The value that the user has entered
+ * @return {function} The function to execute which gets
+ *                    redux-thunk params to use for dispatching
+ */
+export function updateGameValue(gameId, gameKey, gameVal) {
+  return (dispatch, getState) => {
+    const currentGameData = getState().games[gameId];
+    const currentTurn = currentGameData.turn;
+    const currentUserFbId = getState().user.fbId;
+
+    // Make sure it's the current user's turn
+    if (currentTurn !== currentUserFbId) {
+      return false;
+    }
+
+    const { hostFbId, opponentFbId } = currentGameData;
+
+    let gameNextTurn = hostFbId;
+    if (currentTurn === hostFbId) {
+      gameNextTurn = opponentFbId;
+    }
+
+    const dispatcher = dispatch(updateGameValueAction(gameId, gameKey, gameVal, gameNextTurn));
+
+    // Synch with Firebase
+    firebase.post(`games/${gameId}`, {
+      data: getState().games[gameId],
+    });
+
+    return dispatcher;
   };
 }

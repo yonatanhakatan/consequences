@@ -1,0 +1,47 @@
+@import './assets/css/base/colors';
+@import './assets/css/utils/variables';
+@import './assets/css/base/fonts';
+
+.game {
+    width: 80%;
+    margin: 0 auto;
+    text-align: left;
+    overflow: hidden;
+
+    .fold {
+        position: relative;
+        height: 40px;
+        background-color: $white;
+        transform: rotate(-.25deg);
+        backface-visibility: hidden;
+
+        &:after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            box-shadow: 0 3px 3px 0px $boulder;
+        }
+    }
+
+    .entry {
+        padding: $baseSpacing;
+        background-color: $white;
+        @include fsHandwriting;
+
+        label {
+            display: block;
+            font-weight: 700;
+        }
+
+        input {
+            display: block;
+            width: 100%;
+            border: 0;
+            outline: none;
+            @include fsHandwriting;
+        }
+    }
+}
