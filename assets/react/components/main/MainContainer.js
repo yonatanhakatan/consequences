@@ -12,8 +12,9 @@ class MainContainer extends React.Component {
   }
 
   componentDidMount() {
-    this.props.verifyAuth();
-    this.props.getUserDetails(this.props.retrieveGames);
+    this.props.verifyAuth(() => {
+      this.props.getUserDetails(this.props.retrieveGames);
+    });
   }
 
   render() {

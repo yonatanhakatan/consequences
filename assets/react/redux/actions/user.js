@@ -55,13 +55,21 @@ export function updateUserFbFriends(friends) {
 /**
  * Verify authentication with Firebase by starting
  * an authentication state listener
+ * @param  {Function} initCallback Callback to call after firebase has
+ *                                 intialiased a user
  * @return {function} The function to execute which gets redux-thunk
  *                    params to use for dispatching
  */
-export function verifyAuth() {
+export function verifyAuth(initCallback) {
+  let isInit = false;
+
   return (dispatch) => {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
+        if (!isInit) {
+          initCallback();
+          isInit = true;
+        }
         dispatch(userAuth());
       } else {
         dispatch(userNoAuth());
