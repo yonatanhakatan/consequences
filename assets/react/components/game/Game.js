@@ -6,15 +6,29 @@ import styles from './Game.scss';
 
 class Game extends React.Component {
 
-  componentDidMount() {
-    if (this.props.isUsersTurn) {
-      this.entryInput.focus();
-    }
+  constructor() {
+    super();
+    this.submitEntry = this.submitEntry.bind(this);
+    this.turnJustPlayed = false;
+  }
+
+  submitEntry() {
+    this.turnJustPlayed = true;
+    // Not ideal but trying to avoid
+    // using state because the paper turn
+    // effect is a trivial cosmetic effect
+    this.forceUpdate();
+    // Wait for paper turn animation to complete
+    // before updating state
+    setInterval(() => {
+      this.props.onEntrySubmit(this.entryInput.value);
+    }, 1500);
   }
 
   render() {
     const classes = classNames({
       game: true,
+      turnJustPlayed: this.turnJustPlayed,
     });
 
     return (
@@ -27,10 +41,15 @@ class Game extends React.Component {
               <input
                 type="text"
                 id="entry-input"
-                ref={(input) => { this.entryInput = input; }}
+                ref={(input) => {
+                  this.entryInput = input;
+                  if (this.entryInput) {
+                    this.entryInput.focus();
+                  }
+                }}
               />
+              <button onClick={this.submitEntry}>Submit</button>
             </div>
-            <button onClick={() => { this.props.onEntrySubmit(this.entryInput.value); }}>Submit</button>
           </div>
         ) : (
           <div>It's not currently your turn!</div>

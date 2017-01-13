@@ -8,11 +8,20 @@
     text-align: left;
     overflow: hidden;
 
+    &.turnJustPlayed {
+        .fold {
+            transition: 1s ease-in-out;
+            transform: rotateX(180deg);
+            backface-visibility: visible;
+        }
+    }
+
     .fold {
         position: relative;
-        height: 40px;
+        height: 100px;
         background-color: $white;
         transform: rotate(-.25deg);
+        transform-origin: 50% 100%;
         backface-visibility: hidden;
 
         &:after {
@@ -37,11 +46,16 @@
         }
 
         input {
+            margin-bottom: $baseSpacing;
             display: block;
             width: 100%;
             border: 0;
             outline: none;
             @include fsHandwriting;
+        }
+
+        button {
+            background-color: $grey;
         }
     }
 }
