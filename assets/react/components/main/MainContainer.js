@@ -6,12 +6,8 @@ import { initFB } from '../../utils/fb';
 
 class MainContainer extends React.Component {
 
-  constructor() {
-    super();
-    initFB();
-  }
-
   componentDidMount() {
+    initFB();
     this.props.verifyAuth(() => {
       this.props.getUserDetails(this.props.retrieveGames);
     });
