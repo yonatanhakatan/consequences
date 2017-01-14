@@ -53,6 +53,23 @@ export function updateUserFbFriends(friends) {
 }
 
 /**
+ * Update the game state for the current user's game.
+ * The game state refers to various points in the game like if their
+ * turn has just been played or if their turn has just ended
+ * @param  {string} gameId    The unique identifier for the game
+ * @param  {string} gameState The new game state
+ * @return {Object} The action data
+ */
+export function updateUserGameState(gameId, gameState) {
+  return {
+    type: 'UPDATE_USER_GAME_STATE',
+    gameId,
+    gameState,
+  };
+}
+
+
+/**
  * Verify authentication with Firebase by starting
  * an authentication state listener
  * @param  {Function} initCallback Callback to call after firebase has

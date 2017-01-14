@@ -18,6 +18,14 @@ export default function user(state = {}, action) {
       return update(state, {
         friends: { $set: action.friends },
       });
+    case 'UPDATE_USER_GAME_STATE':
+      return update(state, {
+        gameState: {
+          [action.gameId]: {
+            $set: action.gameState,
+          },
+        },
+      });
     default:
       return state;
   }

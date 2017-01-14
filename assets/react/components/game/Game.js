@@ -9,31 +9,18 @@ class Game extends React.Component {
   constructor() {
     super();
     this.submitEntry = this.submitEntry.bind(this);
-    this.turnJustPlayed = false;
+    this.renderElement = this.renderElement.bind(this);
   }
 
   submitEntry() {
-    this.turnJustPlayed = true;
-    // Not ideal but trying to avoid
-    // using state because the paper turn
-    // effect is a trivial cosmetic effect
-    this.forceUpdate();
-    // Wait for paper turn animation to complete
-    // before updating state
-    setInterval(() => {
-      this.props.onEntrySubmit(this.entryInput.value);
-    }, 1500);
+    this.props.onEntrySubmit(this.entryInput.value);
   }
 
-  render() {
-    const classes = classNames({
-      game: true,
-      turnJustPlayed: this.turnJustPlayed,
-    });
-
-    return (
-      <div styleName={classes}>
-        {this.props.isUsersTurn ? (
+  renderElement() {
+    switch (this.props.gameState) {
+      case 'userTurn':
+      case 'turnJustPlayed':
+        return (
           <div>
             <div styleName="fold"></div>
             <div styleName="entry">
@@ -51,9 +38,25 @@ class Game extends React.Component {
               <button onClick={this.submitEntry}>Submit</button>
             </div>
           </div>
-        ) : (
-          <div>It's not currently your turn!</div>
-        )}
+        );
+      case 'turnEnded':
+        return <div>It's now your opponent's turn</div>;
+      case 'notUserTurn':
+        return <div>It's not currently your turn!</div>;
+      default:
+        return <div>Initialising...</div>;
+    }
+  }
+
+  render() {
+    const classes = classNames({
+      game: true,
+      turnJustPlayed: this.props.gameState === 'turnJustPlayed',
+    });
+
+    return (
+      <div styleName={classes}>
+        {this.renderElement()}
       </div>
     );
   }
@@ -62,7 +65,7 @@ class Game extends React.Component {
 Game.propTypes = {
   currentLabel: React.PropTypes.string,
   onEntrySubmit: React.PropTypes.func,
-  isUsersTurn: React.PropTypes.bool,
+  gameState: React.PropTypes.string,
 };
 
 export default cssModules(Game, styles, { allowMultiple: true });
