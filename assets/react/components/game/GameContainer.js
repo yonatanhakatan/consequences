@@ -8,9 +8,26 @@ class GameContainer extends React.Component {
     super();
     this.initialGameStateSet = false;
     this.onEntrySubmit = this.onEntrySubmit.bind(this);
+    this.checkGameDataAvailable = this.checkGameDataAvailable.bind(this);
+  }
+
+  componentDidMount() {
+    this.checkGameDataAvailable();
   }
 
   componentDidUpdate() {
+    this.checkGameDataAvailable();
+  }
+
+  onEntrySubmit(val) {
+    this.props.updateUserGameState(this.props.params.gameId, 'turnJustPlayed');
+    setInterval(() => {
+      this.props.updateUserGameState(this.props.params.gameId, 'turnEnded');
+      this.props.updateGameValue(this.props.params.gameId, this.currentKey, val);
+    }, 1500);
+  }
+
+  checkGameDataAvailable() {
     if (!this.initialGameStateSet) {
       const gameData = this.props.games[this.props.params.gameId];
 
@@ -43,14 +60,6 @@ class GameContainer extends React.Component {
         this.initialGameStateSet = true;
       }
     }
-  }
-
-  onEntrySubmit(val) {
-    this.props.updateUserGameState(this.props.params.gameId, 'turnJustPlayed');
-    setInterval(() => {
-      this.props.updateUserGameState(this.props.params.gameId, 'turnEnded');
-      this.props.updateGameValue(this.props.params.gameId, this.currentKey, val);
-    }, 1500);
   }
 
   render() {
