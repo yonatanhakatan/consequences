@@ -1,5 +1,6 @@
 import firebase from '../../firebase/Firebase';
 import { browserHistory } from 'react-router';
+import { sendAppRequest as sendFbAppRequest } from '../../utils/fb';
 
 /**
  * The actual create game action which gets dispatched
@@ -118,6 +119,8 @@ export function updateGameValue(gameId, gameKey, gameVal) {
     firebase.post(`games/${gameId}`, {
       data: getState().games[gameId],
     });
+
+    sendFbAppRequest(gameNextTurn, 'It\'s your turn!', 'turn');
 
     return dispatcher;
   };
