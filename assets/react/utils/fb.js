@@ -57,15 +57,23 @@ export const getCurrentUser = () =>
   });
 
 /**
- * Show a Facebook friend selector dialog
- * @param  {string} The facebook id, username or invite token
- *                  of the selected person
+ * Send a Facebook App request Via a dialog
+ * @param  {string} selectedFriendId      The facebook id, username or invite
+ *                                        token of the selected person
+ * @param  {string} message               The message to send with the request
+ * @param  {string} actionType (optional) The type of app request e.g. 'turn'
  * @return {Object} Promise object
  */
-export const showFriendSelector = (selectedFriendId) =>
+export const sendAppRequest = (selectedFriendId, message, actionType = null) =>
   new Promise((resolve) => {
     waitForSdk(() => {
-      window.FB.ui({ method: 'apprequests', message: 'Hello', to: selectedFriendId }, (response) => {
+      const payload = { method: 'apprequests', message, to: selectedFriendId };
+
+      if (actionType) {
+        payload.action_type = actionType;
+      }
+
+      window.FB.ui(payload, (response) => {
         resolve(response);
       });
     });

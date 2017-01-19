@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { showFriendSelector as showFbFriendSelector } from '../../utils/fb';
+import { sendAppRequest as sendFbAppRequest } from '../../utils/fb';
 
 import Opponent from './Opponent';
 
@@ -16,7 +16,7 @@ class OpponentContainer extends React.Component {
   }
 
   selectFriend(friend) {
-    showFbFriendSelector(friend.id)
+    sendFbAppRequest(friend.id, 'Come and play Consequences!')
       .then(selectedFriend => {
         const opponentId = selectedFriend.to[0];
         this.props.initGame(opponentId);
