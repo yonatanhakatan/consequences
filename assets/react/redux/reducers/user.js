@@ -12,7 +12,11 @@ export default function user(state = {}, action) {
       });
     case 'UPDATE_USER_DETAILS':
       return update(state, {
-        fbId: { $set: action.fbId },
+        fb: {
+          id: { $set: action.user.id },
+          name: { $set: action.user.name },
+          picture: { $set: action.user.picture.data.url },
+        },
       });
     case 'UPDATE_USER_FB_FRIENDS':
       return update(state, {

@@ -30,13 +30,13 @@ export function userNoAuth() {
 
 /**
  * Action to update the current user's details
- * @param  {string} fbId  The user's Facebook ID
+ * @param  {Object} user  The user object
  * @return {Object} The action data
  */
-export function updateUserDetails(fbId) {
+export function updateUserDetails(user) {
   return {
     type: 'UPDATE_USER_DETAILS',
-    fbId,
+    user,
   };
 }
 
@@ -107,7 +107,7 @@ export function getUserDetails(callback = null) {
   return (dispatch) => {
     getCurrentFbUser()
       .then((fbUser) => {
-        dispatch(updateUserDetails(fbUser.id));
+        dispatch(updateUserDetails(fbUser));
         if (callback) {
           callback();
         }

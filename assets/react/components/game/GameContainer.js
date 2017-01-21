@@ -52,7 +52,7 @@ class GameContainer extends React.Component {
           this.currentLabel = 'And Then';
         }
 
-        if (gameData.turn === this.props.user.fbId) {
+        if (gameData.turn === this.props.user.fb.id) {
           this.props.updateUserGameState(this.props.params.gameId, 'userTurn');
         } else {
           this.props.updateUserGameState(this.props.params.gameId, 'notUserTurn');

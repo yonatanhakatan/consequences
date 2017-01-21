@@ -46,7 +46,7 @@ export const getCurrentUser = () =>
   new Promise((resolve) => {
     if (!currentUser) {
       waitForSdk(() => {
-        window.FB.api('/me', { access_token: localStorage.getItem('fbAccessToken') }, (user) => {
+        window.FB.api('/me?fields=id,name,picture', { access_token: localStorage.getItem('fbAccessToken') }, (user) => {
           currentUser = user;
           resolve(currentUser);
         });

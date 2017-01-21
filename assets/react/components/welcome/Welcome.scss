@@ -1,4 +1,5 @@
 @import './assets/css/base/colors';
+@import './assets/css/utils/variables';
 
 .welcome {
     display: flex;
@@ -8,5 +9,29 @@
 
     button {
         display: block;
+    }
+
+    .usersTurn {
+        margin-top: $baseSpacing;
+
+        ul {
+            margin: ($baseSpacing / 2) 0 0;
+            padding: 0;
+            list-style: none;
+
+            li {
+
+                a {
+                    padding: $baseSpacing;
+                    display: block;
+                    border: 1px solid $white;
+
+                    img {
+                        margin-right: $baseSpacing / 2;
+                        vertical-align: middle;
+                    }
+                }
+            }
+        }
     }
 }

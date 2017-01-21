@@ -4,8 +4,8 @@ export default function games(state = {}, action) {
   switch (action.type) {
     case 'CREATE_GAME': {
       return update(state, { [action.gameId]: { $set: {
-        hostFbId: action.gameData.hostFbId || null,
-        opponentFbId: action.gameData.opponentFbId || null,
+        hostFbUser: action.gameData.hostFbUser || null,
+        opponentFbUser: action.gameData.opponentFbUser || null,
         turn: action.gameData.turn || null,
         manName: action.gameData.manName || null,
         womanName: action.gameData.womanName || null,

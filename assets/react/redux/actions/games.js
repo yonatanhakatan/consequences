@@ -18,23 +18,28 @@ function createGameAction(gameId, gameData) {
 
 /**
  * Initialise a new game
- * @param  {string} opponentFbId The facebook ID of the opponent
+ * @param  {string} opponentFbUser The opponent's Facebook user data
  * @return {function} The function to execute which gets redux-thunk
  *                    params to use for dispatching
  */
-export function initGame(opponentFbId) {
+export function initGame(opponentFbUser) {
   return (dispatch, getState) => {
     const gameId = Math.random().toString(36).substr(2, 9);
-    const hostFbId = getState().user.fbId;
-    dispatch(createGameAction(gameId, { hostFbId, opponentFbId, turn: hostFbId }));
+    const hostFbUser = getState().user.fb;
+
+    dispatch(createGameAction(gameId, {
+      hostFbUser,
+      opponentFbUser,
+      turn: hostFbUser.id,
+    }));
 
     firebase.post(`games/${gameId}`, {
       data: getState().games[gameId],
     }).then(() => {
-      firebase.push(`users/${hostFbId}/games`, {
+      firebase.push(`users/${hostFbUser.id}/games`, {
         data: gameId,
       }).then(() => {
-        firebase.push(`users/${opponentFbId}/games`, {
+        firebase.push(`users/${opponentFbUser.id}/games`, {
           data: gameId,
         });
 
@@ -51,7 +56,7 @@ export function initGame(opponentFbId) {
  */
 export function retrieveGames() {
   return (dispatch, getState) => {
-    const userFbId = getState().user.fbId;
+    const userFbId = getState().user.fb.id;
 
     firebase.fetch(`users/${userFbId}/games`, {
       context: {},
@@ -99,18 +104,18 @@ export function updateGameValue(gameId, gameKey, gameVal) {
   return (dispatch, getState) => {
     const currentGameData = getState().games[gameId];
     const currentTurn = currentGameData.turn;
-    const currentUserFbId = getState().user.fbId;
+    const currentUserFbId = getState().user.fb.id;
 
     // Make sure it's the current user's turn
     if (currentTurn !== currentUserFbId) {
       return false;
     }
 
-    const { hostFbId, opponentFbId } = currentGameData;
+    const { hostFbUser, opponentFbUser } = currentGameData;
 
-    let gameNextTurn = hostFbId;
-    if (currentTurn === hostFbId) {
-      gameNextTurn = opponentFbId;
+    let gameNextTurn = hostFbUser.id;
+    if (currentTurn === hostFbUser.id) {
+      gameNextTurn = opponentFbUser.id;
     }
 
     const dispatcher = dispatch(updateGameValueAction(gameId, gameKey, gameVal, gameNextTurn));

@@ -1,1 +1,1 @@
-export default { gameState: {} };
+export default { gameState: {}, fb: {} };

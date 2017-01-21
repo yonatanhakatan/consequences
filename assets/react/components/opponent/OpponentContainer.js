@@ -18,8 +18,11 @@ class OpponentContainer extends React.Component {
   selectFriend(friend) {
     sendFbAppRequest(friend.id, 'Come and play Consequences!')
       .then(selectedFriend => {
-        const opponentId = selectedFriend.to[0];
-        this.props.initGame(opponentId);
+        this.props.initGame({
+          id: selectedFriend.to[0],
+          name: friend.name,
+          picture: friend.picture.data.url,
+        });
       });
   }
 

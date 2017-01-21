@@ -23,15 +23,33 @@ class WelcomeContainer extends React.Component {
     }
   }
 
+  usersTurnGames() {
+    const { games } = this.props;
+
+    return Object.keys(games)
+      .filter((gameId) => (games[gameId].turn === this.props.user.fb.id))
+      .map((gameId) => {
+        const game = games[gameId];
+
+        let opponentKey = 'hostFbUser';
+        if (game[opponentKey].id === this.props.user.fb.id) {
+          opponentKey = 'opponentFbUser';
+        }
+
+        return { gameId, opponentFbUser: game[opponentKey] };
+      });
+  }
+
   render() {
     return (
-      <Welcome startGame={this.startGame} />
+      <Welcome usersTurnGames={this.usersTurnGames()} startGame={this.startGame} />
     );
   }
 }
 
 WelcomeContainer.propTypes = {
   user: React.PropTypes.object,
+  games: React.PropTypes.object,
 };
 
 export default WelcomeContainer;
