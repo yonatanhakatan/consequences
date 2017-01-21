@@ -5,7 +5,8 @@
     "plugin:import/warnings"
   ],
   "plugins": [
-    "react"
+    "react",
+    "compat"
   ],
   "parser": "babel-eslint",
   "env": {
@@ -16,6 +17,7 @@
     "jasmine": true
   },
   "rules": {
+    "compat/compat": 2,
     "strict": 0,
     "newline-before-return": 1,
     "react/prefer-stateless-function": "warn",
