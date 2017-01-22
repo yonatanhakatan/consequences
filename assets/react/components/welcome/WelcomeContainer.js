@@ -31,13 +31,18 @@ class WelcomeContainer extends React.Component {
         const game = games[gameId];
 
         let opponentKey = 'hostFbUser';
+
         if (game[opponentKey].id === this.props.user.fb.id) {
           opponentKey = 'opponentFbUser';
         }
 
-        let status = `${game[opponentKey].name}'s turn`;
-        if (games[gameId].turn === this.props.user.fb.id) {
-          status = 'Your Turn';
+        let status = 'Finished';
+        if (!game.andThen) {
+          if (games[gameId].turn === this.props.user.fb.id) {
+            status = 'Your Turn';
+          } else {
+            status = `${game[opponentKey].name}'s turn`;
+          }
         }
 
         return { gameId, opponentFbUser: game[opponentKey], status };

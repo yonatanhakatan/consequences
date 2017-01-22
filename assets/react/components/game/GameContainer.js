@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Game from './Game';
+import { GAME_CATEGORIES } from '../../constants/game';
 
 class GameContainer extends React.Component {
 
@@ -36,31 +37,36 @@ class GameContainer extends React.Component {
       const gameData = this.props.games[this.props.params.gameId];
 
       if (gameData) {
-        if (!gameData.manName) {
-          this.currentKey = 'manName';
-          this.currentLabel = 'Enter a man\'s name';
-        } else if (!gameData.womanName) {
-          this.currentKey = 'womanName';
-          this.currentLabel = 'Enter a woman\'s name';
-        } else if (!gameData.location) {
-          this.currentKey = 'location';
-          this.currentLabel = 'At';
-        } else if (!gameData.manSaid) {
-          this.currentKey = 'manSaid';
-          this.currentLabel = 'He Said';
-        } else if (!gameData.womanSaid) {
-          this.currentKey = 'womanSaid';
-          this.currentLabel = 'She Said';
-        } else if (!gameData.andThen) {
-          this.currentKey = 'andThen';
-          this.currentLabel = 'And Then';
+        for (const labelData of GAME_CATEGORIES) {
+          if (!gameData[labelData.key]) {
+            this.currentKey = labelData.key;
+            this.currentCategories = [{
+              label: labelData.initialLabel,
+            }];
+            break;
+          }
         }
 
-        if (gameData.turn === this.props.user.fb.id) {
-          this.props.updateUserGameState(this.props.params.gameId, 'userTurn');
-        } else {
-          this.props.updateUserGameState(this.props.params.gameId, 'notUserTurn');
+        if (!this.currentKey) {
+          this.currentKey = 'finished';
+          this.currentCategories = GAME_CATEGORIES.map((label) => {
+            const labelItem = label;
+            labelItem.value = gameData[label.key];
+
+            return labelItem;
+          });
         }
+
+        if (this.currentKey === 'finished') {
+          this.props.updateUserGameState(this.props.params.gameId, 'finished');
+        } else {
+          if (gameData.turn === this.props.user.fb.id) {
+            this.props.updateUserGameState(this.props.params.gameId, 'userTurn');
+          } else {
+            this.props.updateUserGameState(this.props.params.gameId, 'notUserTurn');
+          }
+        }
+
         this.forceUpdate();
       }
     }
@@ -70,7 +76,7 @@ class GameContainer extends React.Component {
     return (
       <Game
         gameState={this.props.user.gameState[this.props.params.gameId]}
-        currentLabel={this.currentLabel}
+        categories={this.currentCategories}
         onEntrySubmit={this.onEntrySubmit}
       />
     );

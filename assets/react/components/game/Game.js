@@ -14,7 +14,7 @@ class Game extends React.Component {
   }
 
   submitEntry() {
-    this.props.onEntrySubmit(this.entryInput.value);
+    this.props.onEntrySubmit(this.categoryInput.value);
   }
 
   renderElement() {
@@ -24,15 +24,15 @@ class Game extends React.Component {
         return (
           <div>
             <div styleName="fold"></div>
-            <div styleName="entry">
-              <label htmlFor="entry-input">{this.props.currentLabel}</label>
+            <div styleName="category">
+              <label htmlFor="category-input">{this.props.categories[0].label}</label>
               <input
                 type="text"
-                id="entry-input"
+                id="category-input"
                 ref={(input) => {
-                  this.entryInput = input;
-                  if (this.entryInput) {
-                    this.entryInput.focus();
+                  this.categoryInput = input;
+                  if (this.categoryInput) {
+                    this.categoryInput.focus();
                   }
                 }}
               />
@@ -40,31 +40,46 @@ class Game extends React.Component {
             </div>
           </div>
         );
+      case 'finished':
+        return (
+          <div>
+            {this.props.categories && this.props.categories.map(category => (
+              <div styleName="category" key={category.key}>
+                {category.finalLabel && <div styleName="label">{category.finalLabel}</div>}
+                <div>{category.value}</div>
+              </div>
+            ))}
+          </div>
+        );
       case 'turnEnded':
-        return <div>It's now your opponent's turn. <Link to="/">Back to Home</Link></div>;
+        return <div>It's now your opponent's turn.</div>;
       case 'notUserTurn':
-        return <div>It's not currently your turn! <Link to="/">Back to Home</Link></div>;
+        return <div>It's not currently your turn!</div>;
       default:
         return <div>Initialising...</div>;
     }
   }
 
   render() {
+    const { gameState } = this.props;
+
     const classes = classNames({
       game: true,
-      turnJustPlayed: this.props.gameState === 'turnJustPlayed',
+      turnJustPlayed: gameState === 'turnJustPlayed',
+      finished: gameState === 'finished',
     });
 
     return (
       <div styleName={classes}>
         {this.renderElement()}
+        <Link to="/">Back to Home</Link>
       </div>
     );
   }
 }
 
 Game.propTypes = {
-  currentLabel: React.PropTypes.string,
+  categories: React.PropTypes.array,
   onEntrySubmit: React.PropTypes.func,
   gameState: React.PropTypes.string,
 };
