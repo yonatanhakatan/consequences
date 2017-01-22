@@ -1,6 +1,7 @@
 import React from 'react';
 import cssModules from 'react-css-modules';
 import classNames from 'classnames';
+import { Link } from 'react-router';
 
 import styles from './Game.scss';
 
@@ -40,9 +41,9 @@ class Game extends React.Component {
           </div>
         );
       case 'turnEnded':
-        return <div>It's now your opponent's turn</div>;
+        return <div>It's now your opponent's turn. <Link to="/">Back to Home</Link></div>;
       case 'notUserTurn':
-        return <div>It's not currently your turn!</div>;
+        return <div>It's not currently your turn! <Link to="/">Back to Home</Link></div>;
       default:
         return <div>Initialising...</div>;
     }
