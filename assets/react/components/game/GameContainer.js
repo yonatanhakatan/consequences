@@ -6,7 +6,7 @@ class GameContainer extends React.Component {
 
   constructor() {
     super();
-    this.initialGameStateSet = false;
+    this.currentKey = null;
     this.onEntrySubmit = this.onEntrySubmit.bind(this);
     this.checkGameDataAvailable = this.checkGameDataAvailable.bind(this);
   }
@@ -19,6 +19,10 @@ class GameContainer extends React.Component {
     this.checkGameDataAvailable();
   }
 
+  componentWillUnmount() {
+    this.currentKey = null;
+  }
+
   onEntrySubmit(val) {
     this.props.updateUserGameState(this.props.params.gameId, 'turnJustPlayed');
     setInterval(() => {
@@ -28,7 +32,7 @@ class GameContainer extends React.Component {
   }
 
   checkGameDataAvailable() {
-    if (!this.initialGameStateSet) {
+    if (!this.currentKey) {
       const gameData = this.props.games[this.props.params.gameId];
 
       if (gameData) {
@@ -57,7 +61,7 @@ class GameContainer extends React.Component {
         } else {
           this.props.updateUserGameState(this.props.params.gameId, 'notUserTurn');
         }
-        this.initialGameStateSet = true;
+        this.forceUpdate();
       }
     }
   }
