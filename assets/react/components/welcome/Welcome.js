@@ -32,8 +32,12 @@ const Welcome = (props) => {
 
     return (
       <table>
-        <tr><th>Opponent</th><th>Status</th></tr>
-        {items}
+        <thead>
+          <tr><th>Opponent</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          {items}
+        </tbody>
       </table>
     );
   };
