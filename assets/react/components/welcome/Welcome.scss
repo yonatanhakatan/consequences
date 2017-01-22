@@ -11,23 +11,22 @@
         display: block;
     }
 
-    .usersTurn {
+    .currentGames {
         margin-top: $baseSpacing;
 
-        ul {
+        table {
             margin: ($baseSpacing / 2) 0 0;
-            padding: 0;
-            list-style: none;
 
-            li {
+            td, th {
+                padding: $baseSpacing / 2;
+                text-align: left;
+                vertical-align: middle;
 
                 a {
-                    padding: $baseSpacing;
                     display: block;
-                    border: 1px solid $white;
+                    vertical-align: middle;
 
                     img {
-                        margin-right: $baseSpacing / 2;
                         vertical-align: middle;
                     }
                 }

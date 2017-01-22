@@ -10,31 +10,42 @@ const Welcome = (props) => {
     welcome: true,
   });
 
-  const renderUsersTurnGames = () => {
-    const items = props.usersTurnGames.map((game) => {
-      const { gameId, opponentFbUser } = game;
+  const renderCurrentGames = () => {
+    const items = props.currentGames.map((game) => {
+      const { gameId, opponentFbUser, status } = game;
+      const gameUrl = `/auth/game/${gameId}`;
 
       return (
-        <li key={gameId}>
-          <Link to={`/auth/game/${gameId}`}>
-            <img src={opponentFbUser.picture} role="presentation" />
-            {opponentFbUser.name}
-          </Link>
-        </li>
+        <tr key={gameId}>
+          <td>
+            <Link to={gameUrl}>
+              <img src={opponentFbUser.picture} role="presentation" />
+              {opponentFbUser.name}
+            </Link>
+          </td>
+          <td>
+            <Link to={gameUrl}>{status}</Link>
+          </td>
+        </tr>
       );
     });
 
-    return <ul>{items}</ul>;
+    return (
+      <table>
+        <tr><th>Opponent</th><th>Status</th></tr>
+        {items}
+      </table>
+    );
   };
 
   return (
     <div styleName={classes}>
       <div>
         <button onClick={props.startGame}>Start Game</button>
-        {(props.usersTurnGames.length > 0) &&
-          <div styleName="usersTurn">
-            It's your turn in the following games...
-            {renderUsersTurnGames()}
+        {(props.currentGames.length > 0) &&
+          <div styleName="currentGames">
+            These are the games you are currently involved in...
+            {renderCurrentGames()}
           </div>
         }
       </div>
@@ -44,7 +55,7 @@ const Welcome = (props) => {
 
 Welcome.propTypes = {
   startGame: React.PropTypes.func,
-  usersTurnGames: React.PropTypes.array,
+  currentGames: React.PropTypes.array,
 };
 
 export default cssModules(Welcome, styles, { allowMultiple: true });

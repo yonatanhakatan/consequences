@@ -23,11 +23,10 @@ class WelcomeContainer extends React.Component {
     }
   }
 
-  usersTurnGames() {
+  currentGames() {
     const { games } = this.props;
 
     return Object.keys(games)
-      .filter((gameId) => (games[gameId].turn === this.props.user.fb.id))
       .map((gameId) => {
         const game = games[gameId];
 
@@ -36,13 +35,18 @@ class WelcomeContainer extends React.Component {
           opponentKey = 'opponentFbUser';
         }
 
-        return { gameId, opponentFbUser: game[opponentKey] };
+        let status = `${game[opponentKey].name}'s turn`;
+        if (games[gameId].turn === this.props.user.fb.id) {
+          status = 'Your Turn';
+        }
+
+        return { gameId, opponentFbUser: game[opponentKey], status };
       });
   }
 
   render() {
     return (
-      <Welcome usersTurnGames={this.usersTurnGames()} startGame={this.startGame} />
+      <Welcome currentGames={this.currentGames()} startGame={this.startGame} />
     );
   }
 }
