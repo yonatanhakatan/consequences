@@ -1,10 +1,12 @@
 import React from 'react';
 import { shallow } from 'enzyme';
+
 import Welcome from './Welcome';
+import { USER_TURN_GAMES } from '../../mocks/userTurnGames';
 
 describe('Welcome', () => {
-  it('should contain 2 buttons', () => {
-    const element = shallow(<Welcome />);
-    expect(element.find('button').length).toEqual(2);
+  it('shows the correct number of games that it\'s the user\'s turn in', () => {
+    const element = shallow(<Welcome usersTurnGames={USER_TURN_GAMES} />);
+    expect(element.find('.usersTurn li').length).toEqual(USER_TURN_GAMES.length);
   });
 });
