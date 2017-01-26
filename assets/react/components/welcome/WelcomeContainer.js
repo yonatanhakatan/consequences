@@ -12,6 +12,10 @@ class WelcomeContainer extends React.Component {
     this.startGame = this.startGame.bind(this);
   }
 
+  attemptFbAuth() {
+    fbLogin();
+  }
+
   startGame() {
     if (this.props.user.authenticated) {
       browserHistory.push('/auth/opponent');
@@ -51,7 +55,12 @@ class WelcomeContainer extends React.Component {
 
   render() {
     return (
-      <Welcome currentGames={this.currentGames()} startGame={this.startGame} />
+      <Welcome
+        currentGames={this.currentGames()}
+        startGame={this.startGame}
+        user={this.props.user}
+        attemptFbAuth={this.attemptFbAuth}
+      />
     );
   }
 }

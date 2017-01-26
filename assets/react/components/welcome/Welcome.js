@@ -42,16 +42,37 @@ const Welcome = (props) => {
     );
   };
 
-  return (
-    <div styleName={classes}>
-      <div>
-        <button onClick={props.startGame}>Start Game</button>
-        {(props.currentGames.length > 0) &&
-          <div styleName="currentGames">
+  const renderCheck = () => {
+    if (props.user.authenticated) {
+      const content = [<button key="welcomeStart" onClick={props.startGame}>Start Game</button>];
+
+      if (props.currentGames.length > 0) {
+        content.push(
+          <div styleName="currentGames" key="welcomeCurrentGames">
             These are the games you are currently involved in...
             {renderCurrentGames()}
           </div>
-        }
+        );
+      }
+
+      return content;
+    }
+
+    if (props.user.authenticated === false) {
+      return (
+        <button styleName="fbLogin" onClick={props.attemptFbAuth}>
+          <img src="../../../images/fb_login.png" alt="Login with Facebook" />
+        </button>
+      );
+    }
+
+    return null;
+  };
+
+  return (
+    <div styleName={classes}>
+      <div>
+        {renderCheck()}
       </div>
     </div>
   );
@@ -60,6 +81,8 @@ const Welcome = (props) => {
 Welcome.propTypes = {
   startGame: React.PropTypes.func,
   currentGames: React.PropTypes.array,
+  user: React.PropTypes.object,
+  attemptFbAuth: React.PropTypes.func,
 };
 
 export default cssModules(Welcome, styles, { allowMultiple: true });
